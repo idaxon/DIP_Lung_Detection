@@ -6,9 +6,6 @@
 
 - The output of the system will be a prediction of whether or not lung cancer is present in the image, which can be used to assist medical professionals in making accurate and timely diagnoses. The project involves the use of state-of-the-art machine learning algorithms, such as convolutional neural networks (CNNs), and advanced image processing techniques, such as edge detection, segmentation, and feature extraction.
 
-- Check out the live Deployment at - [Streamlit Deployment](https://vedantkadam-lung-cancer-streamlit-app-le67uq.streamlit.app/) 
-## How to Run this Project
-
 ## Tech Stacks Used
 
 - Python
