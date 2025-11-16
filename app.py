@@ -387,10 +387,10 @@ if (selection == 'Lung Cancer Prediction'):
 
 if (selection == 'CNN Based disease Prediction'):
   st.set_option('deprecation.showfileUploaderEncoding', False)
-  @st.cache(allow_output_mutation=True)
+  @st.cache_resource
 
   def loading_model():
-    fp = "models/keras_model.h5"
+    fp = "cnn model/lungcancer_model_cnn.h5"
     model_loader = load_model(fp)
     return model_loader
 
@@ -411,7 +411,6 @@ if (selection == 'CNN Based disease Prediction'):
   temp_file = NamedTemporaryFile(delete=False)
   if buffer:
       temp_file.write(buffer.getvalue())
-      st.write(image.load_img(temp_file.name))
 
 
   if buffer is None:
@@ -421,30 +420,28 @@ if (selection == 'CNN Based disease Prediction'):
 
   
 
-    ved_img = image.load_img(temp_file.name, target_size=(224, 224))
+    ved_img = image.load_img(temp_file.name, target_size=(150, 150))
 
-    # Preprocessing the image
     pp_ved_img = image.img_to_array(ved_img)
     pp_ved_img = pp_ved_img/255
     pp_ved_img = np.expand_dims(pp_ved_img, axis=0)
 
-    #predict
-    hardik_preds= cnn.predict(pp_ved_img)
-    print(hardik_preds[0])
+    hardik_preds = cnn.predict(pp_ved_img)
+    prob = float(hardik_preds[0][0])
 
-    if hardik_preds[0][0]>= 0.5:
-      out = ('I am {:.2%} percent confirmed that this is a Normal Case'.format(hardik_preds[0][0]))
+    if prob >= 0.5:
+      out = ('I am {:.2%} percent confirmed that this is a Normal Case'.format(prob))
       st.balloons()
       st.success(out)
     
     else: 
-      out = ('I am {:.2%} percent confirmed that this is a Lung Cancer Case'.format(1-hardik_preds[0][0]))
+      out = ('I am {:.2%} percent confirmed that this is a Lung Cancer Case'.format(1 - prob))
       st.error(out)
 
     
     
-    image = Image.open(temp)
-    st.image(image,use_column_width=True)
+    display_image = Image.open(temp)
+    st.image(display_image, use_column_width=True)
             
               
 
@@ -455,6 +452,6 @@ hide_st_style = """
             header {visibility: hidden;}
             </style>
             """
-st.markdown(hide_st_style, unsafe_allow_html=True)  
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
     
